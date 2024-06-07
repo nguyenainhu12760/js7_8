@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Thay đổi giá trị trong mảng</title>
+  <link rel="stylesheet" type="text/css" href="bai2.css">
+</head>
+<body>
+  <div class="container">
+    <label for="originalValue">Giá trị gốc:</label>
+    <input type="text" id="originalValue">
+    <br>
+    <label for="replaceValue">Giá trị replace:</label>
+    <input type="text" id="replaceValue">
+    <br>
+    <button onclick="replaceValue()">Thay đổi giá trị</button>
+    <br>
+    <p id="result"></p>
+  </div>
+  <script>
+    const array = ['Apple', 'Banana', 'Cherry', 'Date'];
+    function replaceValue() {
+    const originalValue = document.getElementById('originalValue').value;
+    const replaceValue = document.getElementById('replaceValue').value;
+    const index = array.indexOf(originalValue);
+    if (index !== -1) {
+        array[index] = replaceValue;
+        document.getElementById('result').textContent = 'Cập nhật thành công';
+    } else {
+        document.getElementById('result').textContent = 'Không tìm thấy giá trị trong mảng';
+    }
+    }
+  </script>
+</body>
+</html>

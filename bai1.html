@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Chức năng mảng số nguyên</title>
+  <link rel="stylesheet" type="text/css" href="bai1.css">
+</head>
+<body>
+  <div class="container">
+    <h3>Nhập mảng số nguyên:</h3>
+    <label for="arrayInput">Nhập các số nguyên:</label>
+    <input type="text" id="arrayInput">
+    <button onclick="storeArray()">Lưu mảng</button>
+    <h3>Chọn chức năng:</h3>
+    <select id="functionSelect">
+      <option value="1">1. Tổng các số dương trong mảng</option>
+      <option value="2">2. Đếm có bao nhiêu số dương trong mảng</option>
+      <option value="3">3. Tìm số nhỏ nhất trong mảng</option>
+      <option value="4">4. Tìm số dương nhỏ nhất trong mảng</option>
+      <option value="5">5. Tìm số chẵn cuối cùng trong mảng</option>
+      <option value="6">6. Đổi chỗ 2 giá trị trong mảng</option>
+      <option value="7">7. Sắp xếp mảng theo thứ tự tăng dần</option>
+      <option value="8">8. Tìm số nguyên tố đầu tiên trong mảng</option>
+      <option value="9">9. Nhập thêm mảng số thực, tìm số nguyên</option>
+      <option value="10">10. So sánh số lượng số dương và số lượng số âm</option>
+    </select>
+    <button onclick="performFunction()">Thực hiện</button>
+    <h3>Kết quả:</h3>
+    <p id="result"></p>
+  </div>
+  <script>
+    let array = [];
+    function storeArray() {
+    const input = document.getElementById("arrayInput").value;
+    array = input.split(",").map(Number);
+    console.log(array);
+    }
+    function performFunction() {
+    const functionSelect = document.getElementById("functionSelect");
+    const selectedFunction = functionSelect.value;
+    let result = "";
+    switch (selectedFunction) {
+        case "1":
+        result = sumPositiveNumbers();
+        break;
+        case "2":
+        result = countPositiveNumbers();
+        break;
+        case "3":
+        result = findSmallestNumber();
+        break;
+        case "4":
+        result = findSmallestPositiveNumber();
+        break;
+        case "5":
+        result = findLastEvenNumber();
+        break;
+        case "6":
+        result = swapValues();
+        break;
+        case "7":
+        result = sortArray();
+        break;
+        case "8":
+        result = findFirstPrimeNumber();
+        break;
+        case "9":
+        result = countIntegersInRealArray();
+        break;
+        case "10":
+        result = comparePositiveAndNegativeNumbers();
+        break;
+        default:
+        result = "Vui lòng chọn một chức năng.";
+    }
+    document.getElementById("result").textContent = result;
+    }
+    function sumPositiveNumbers() {
+    const positiveNumbers = array.filter((number) => number > 0);
+    const sum = positiveNumbers.reduce((total, number) => total + number, 0);
+    return `Tổngcác số dương trong mảng là: ${sum}`;
+    }
+    function countPositiveNumbers() {
+    const positiveNumbers = array.filter((number) => number > 0);
+    return `Số lượng số dương trong mảng là: ${positiveNumbers.length}`;
+    }
+    function findSmallestNumber() {
+    const smallestNumber = Math.min(...array);
+    return `Số nhỏ nhất trong mảng là: ${smallestNumber}`;
+    }
+    function findSmallestPositiveNumber() {
+    const positiveNumbers = array.filter((number) => number > 0);
+    if (positiveNumbers.length === 0) {
+        return "Mảng không có số dương.";
+    }
+    const smallestPositiveNumber = Math.min(...positiveNumbers);
+    return `Số dương nhỏ nhất trong mảng là: ${smallestPositiveNumber}`;
+    }
+    function findLastEvenNumber() {
+    const evenNumbers = array.filter((number) => number % 2 === 0);
+    if (evenNumbers.length === 0) {
+        return -1;
+    }
+    return `Số chẵn cuối cùng trong mảng là: ${evenNumbers[evenNumbers.length - 1]}`;
+    }
+    function swapValues() {
+    const positions = prompt("Nhập vào 2 vị trí muốn đổi chỗ giá trị (phân tách bằng dấu phẩy):");
+    const [position1, position2] = positions.split(",").map(Number);
+    if (position1 < 0 || position1 >= array.length || position2 < 0 || position2 >= array.length) {
+        return "Vị trí không hợp lệ.";
+    }
+    [array[position1], array[position2]] = [array[position2], array[position1]];
+    return `Đã đổi chỗ giá trị tại vị trí ${position1} và vị trí ${position2}. Mảng mới: ${array}`;
+    }
+    function sortArray() {
+    const sortedArray = array.slice().sort((a, b) => a - b);
+    return `Mảng được sắp xếp theo thứ tự tăng dần: ${sortedArray}`;
+    }
+    function isPrime(number) {
+    if (number < 2) {
+        return false;
+    }
+    for (let i = 2; i <= Math.sqrt(number); i++) {
+        if (number % i === 0) {
+        return false;
+        }
+    }
+    return true;
+    }
+    function findFirstPrimeNumber() {
+    const primeNumber = array.find(isPrime);
+    if (primeNumber === undefined) {
+        return -1;
+    }
+    return `Số nguyên tố đầu tiên trong mảng là: ${primeNumber}`;
+    }
+    function countIntegersInRealArray() {
+    const realArray = prompt("Nhập mảng số thực (phân tách bằng dấu phẩy):")
+        .split(",")
+        .map(Number);
+    const integerCount = realArray.filter((number) => Number.isInteger(number)).length;
+    return `Trong mảng số thực, có ${integerCount} số nguyên.`;
+    }
+    function comparePositiveAndNegativeNumbers() {
+    const positiveNumbers = array.filter((number) => number > 0);
+    const negativeNumbers = array.filter((number) => number < 0);
+    if (positiveNumbers.length > negativeNumbers.length) {
+        return "Số lượng số dương nhiều hơn số lượng số âm.";
+    } else if (positiveNumbers.length < negativeNumbers.length) {
+        return "Số lượng số âm nhiều hơn số lượng số dương.";
+    } else {
+        return "Số lượng số dương và số lượng số âm bằng nhau.";
+    }
+    }
+  </script>
+</body>
+</html>
